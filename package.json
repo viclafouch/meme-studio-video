@@ -6,17 +6,31 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "tsc --noEmit && next lint",
+    "lint:fix": "eslint . --fix",
+    "preview": "remotion preview src/remotion/index.ts",
+    "render": "remotion render src/remotion/index.ts ",
+    "lambda:site": "npx remotion lambda sites create src/remotion/index.ts --site-name=meme-studio-video",
+    "lambda:function": "npx remotion lambda functions deploy",
+    "lambda:render": "npx remotion lambda render "
   },
   "dependencies": {
+    "@remotion/cli": "4.0.1",
+    "@remotion/lambda": "4.0.1",
+    "@remotion/player": "4.0.1",
     "@types/node": "20.3.3",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
-    "eslint": "8.44.0",
-    "eslint-config-next": "13.4.7",
-    "next": "13.4.7",
+    "next": "13.4.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.1.6"
+    "remotion": "4.0.1"
+  },
+  "devDependencies": {
+    "@viclafouch/eslint-config-viclafouch": "^4.0.0",
+    "eslint": "^8.44.0",
+    "prettier": "^2.8.8",
+    "standard-version": "^9.5.0",
+    "typescript": "^5.1.6"
   }
 }
