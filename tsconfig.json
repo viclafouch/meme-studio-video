@@ -22,7 +22,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@remotion/*": ["./src/remotion/*"],
+      "@components/*": ["./src/components/*"],
     }
   }
 }

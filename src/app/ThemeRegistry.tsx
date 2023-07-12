@@ -8,6 +8,9 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 const theme = createTheme({
+  typography: {
+    fontFamily: 'inherit'
+  },
   status: {
     danger: orange[500]
   }
