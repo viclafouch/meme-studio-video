@@ -1,6 +1,7 @@
 import { Roboto } from 'next/font/google'
-import ThemeRegistry from '@/app/ThemeRegistry'
 import Navbar from '@components/Navbar'
+import { Box } from '@mui/material'
+import ThemeRegistry from './ThemeRegistry'
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -11,12 +12,17 @@ const roboto = Roboto({
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" className={roboto.className}>
-      <body>
+      <Box
+        component="body"
+        display="flex"
+        flexDirection="column"
+        height="100vh"
+      >
         <ThemeRegistry options={{ key: 'mui' }}>
           <Navbar />
-          {children}
+          <Box flexGrow={1}>{children}</Box>
         </ThemeRegistry>
-      </body>
+      </Box>
     </html>
   )
 }

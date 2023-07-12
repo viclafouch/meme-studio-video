@@ -19,16 +19,16 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.0",
     "@mui/material": "^5.14.0",
-    "@remotion/cli": "4.0.5",
-    "@remotion/lambda": "4.0.5",
-    "@remotion/player": "4.0.5",
+    "@remotion/cli": "4.0.1",
+    "@remotion/lambda": "4.0.1",
+    "@remotion/player": "4.0.1",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "next": "13.4.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "remotion": "4.0.5"
+    "remotion": "4.0.1"
   },
   "devDependencies": {
     "@viclafouch/eslint-config-viclafouch": "^4.1.0",

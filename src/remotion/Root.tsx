@@ -1,7 +1,8 @@
+import React from 'react'
 import { Composition } from 'remotion'
 import { MyComp } from './Composition'
 
-export const MyVideo = () => {
+const MyVideo = () => {
   return (
     <Composition
       component={MyComp}
@@ -14,3 +15,5 @@ export const MyVideo = () => {
     />
   )
 }
+
+export default MyVideo
