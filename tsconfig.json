@@ -24,6 +24,11 @@
     "paths": {
       "@remotion/*": ["./src/remotion/*"],
       "@components/*": ["./src/components/*"],
+      "@schemas/*": ["./src/schemas/*"],
+      "@helpers/*": ["./src/helpers/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@stores/*": ["./src/stores/*"],
+      "@hooks/*": ["./src/hooks/*"],
     }
   }
 }

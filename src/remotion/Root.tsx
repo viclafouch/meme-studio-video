@@ -1,19 +1,26 @@
 import React from 'react'
-import { Composition } from 'remotion'
-import { MyComp } from './Composition'
+import { Composition as RemotionComposition } from 'remotion'
+import { Video } from '@schemas/video'
+import { Composition } from './Composition'
+
+const video: Video = {
+  url: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+  width: 1920,
+  height: 1080
+}
 
 const MyVideo = () => {
   return (
-    <Composition
-      component={MyComp}
+    <RemotionComposition
+      component={Composition}
       durationInFrames={120}
       width={1920}
       height={1080}
       fps={30}
       id="my-comp"
-      defaultProps={{ text: 'World' }}
+      defaultProps={{ texts: [], videoURL: video.url }}
     />
   )
 }
 
-export default MyVideo
+export { MyVideo }
