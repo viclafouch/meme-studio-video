@@ -17,5 +17,8 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname
   },
-  overrides: [sortImports(__dirname)]
+  overrides: [sortImports(__dirname)],
+  rules: {
+    'jsx-a11y/media-has-caption': 'off'
+  }
 }

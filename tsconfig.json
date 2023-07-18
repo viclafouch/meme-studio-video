@@ -29,6 +29,8 @@
       "@utils/*": ["./src/utils/*"],
       "@stores/*": ["./src/stores/*"],
       "@hooks/*": ["./src/hooks/*"],
+      "@config/*": ["./src/config/*"],
+      "@database/*": ["./src/database/*"],
     }
   }
 }

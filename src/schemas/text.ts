@@ -8,8 +8,9 @@ export const textSchema = z.object({
   italic: z.boolean(),
   bold: z.boolean(),
   underlined: z.boolean(),
-  y: z.number().int(),
-  x: z.number().int(),
+  y: z.number(),
+  x: z.number(),
+  fontSize: z.number(),
   textAlign: z.enum(['left', 'center', 'right', 'justify'])
 })
 
@@ -24,6 +25,7 @@ export function createText(values: Partial<Text> = {}): Text {
     bold: false,
     x: 0,
     y: 0,
+    fontSize: 30,
     italic: false,
     underlined: false,
     ...values

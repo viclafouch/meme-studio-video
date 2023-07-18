@@ -1,5 +1,6 @@
 import React from 'react'
 import { Composition as RemotionComposition } from 'remotion'
+import { createText } from '@schemas/text'
 import { Video } from '@schemas/video'
 import { Composition } from './Composition'
 
@@ -18,7 +19,11 @@ const MyVideo = () => {
       height={1080}
       fps={30}
       id="my-comp"
-      defaultProps={{ texts: [], videoURL: video.url }}
+      defaultProps={{
+        texts: [createText()],
+        videoURL: video.url,
+        isRendering: true
+      }}
     />
   )
 }

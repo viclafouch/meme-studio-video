@@ -1,6 +1,7 @@
 import { Roboto } from 'next/font/google'
 import Navbar from '@components/Navbar'
 import { Box } from '@mui/material'
+import Providers from './providers'
 import ThemeRegistry from './ThemeRegistry'
 
 const roboto = Roboto({
@@ -18,10 +19,12 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         flexDirection="column"
         height="100vh"
       >
-        <ThemeRegistry options={{ key: 'mui' }}>
-          <Navbar />
-          <Box flexGrow={1}>{children}</Box>
-        </ThemeRegistry>
+        <Providers>
+          <ThemeRegistry options={{ key: 'mui' }}>
+            <Navbar />
+            <Box flexGrow={1}>{children}</Box>
+          </ThemeRegistry>
+        </Providers>
       </Box>
     </html>
   )

@@ -7,6 +7,4 @@ export type DraggableState = {
 export type DownRef = {
   downStartX: number
   downStartY: number
-  downPageX: React.MouseEvent['pageX']
-  downPageY: React.MouseEvent['pageY']
 }

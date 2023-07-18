@@ -1,25 +1,26 @@
 import React from 'react'
 import { Text } from '@schemas/text'
-import Box from '@mui/material/Box'
 import { DownRef, DraggableState } from './Draggable.types'
 import { move } from './Draggable.utils'
 
 export type DraggableProps = {
-  children: React.ReactNode
+  children: React.ReactElement
   x: number
   y: number
+  unscale: number
   textId: Text['id']
-  onMove: (textId: Text['id'], { x, y }: { x: number; y: number }) => void
-  style?: React.CSSProperties
+  onMove?: (textId: Text['id'], { x, y }: { x: number; y: number }) => void
 }
+
+const onMoveDefault = () => {}
 
 const Draggable = ({
   children,
   x,
   y,
+  unscale,
   textId,
-  onMove,
-  style = undefined
+  onMove = onMoveDefault
 }: DraggableProps) => {
   const [state, setState] = React.useState<DraggableState>({
     mode: false
@@ -28,9 +29,9 @@ const Draggable = ({
 
   const handleDraggingMove = React.useCallback(
     (event: MouseEvent) => {
-      onMove(textId, move(event, downRef.current))
+      onMove?.(textId, move(event, downRef.current, unscale))
     },
-    [onMove, textId]
+    [onMove, textId, unscale]
   )
 
   const handleMouseDown = (event: React.MouseEvent) => {
@@ -39,10 +40,8 @@ const Draggable = ({
     event.stopPropagation()
 
     downRef.current = {
-      downStartX: pageX - x,
-      downStartY: pageY - y,
-      downPageX: pageX,
-      downPageY: pageY
+      downStartX: pageX - x / unscale,
+      downStartY: pageY - y / unscale
     }
 
     setState({
@@ -70,25 +69,7 @@ const Draggable = ({
     return () => {}
   }, [state.mode, handleMouseUp, handleDraggingMove])
 
-  return (
-    <Box
-      position="absolute"
-      style={{
-        top: y,
-        left: x,
-        backgroundColor: 'red',
-        ...style
-        // transform: `translate3d(${x}px, ${y}px, 0)`
-      }}
-      sx={{
-        cursor: 'move',
-        userSelect: 'none'
-      }}
-      onMouseDown={handleMouseDown}
-    >
-      {children}
-    </Box>
-  )
+  return React.cloneElement(children, { onMouseDown: handleMouseDown })
 }
 
 export default Draggable

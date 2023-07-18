@@ -14,8 +14,10 @@ import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Paper from '@mui/material/Paper'
+import Slider from '@mui/material/Slider'
 import TextField from '@mui/material/TextField'
 import ToggleButton from '@mui/material/ToggleButton'
+import Typography from '@mui/material/Typography'
 import * as Styled from './TextBox.styled'
 
 export type TextBoxProps = {
@@ -96,6 +98,16 @@ export const TextBox = ({
     )
   }
 
+  const handleChangeSize = (event: Event, newValue: number | number[]) => {
+    onChange(
+      {
+        ...text,
+        fontSize: newValue as number
+      },
+      index
+    )
+  }
+
   const handleFormat = (
     event: React.MouseEvent<HTMLElement>,
     newFormats: Format[]
@@ -145,6 +157,16 @@ export const TextBox = ({
           format="hex"
           onChange={handleChangeColor}
         />
+        <Box>
+          <Typography gutterBottom>Taille du texte</Typography>
+          <Slider
+            onChange={handleChangeSize}
+            size="small"
+            value={text.fontSize}
+            aria-label="Taille du texte"
+            valueLabelDisplay="auto"
+          />
+        </Box>
         <Paper
           elevation={0}
           sx={{

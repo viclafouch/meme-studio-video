@@ -1,13 +1,23 @@
+'use client'
+
 import React from 'react'
+import Link from 'next/link'
+import { useSelectedLayoutSegments } from 'next/navigation'
+import RenderButton from '@components/RenderButton'
+import { useVideoStudio } from '@stores/video-studio'
 import MenuIcon from '@mui/icons-material/Menu'
+import { Button } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 
 const Navbar = () => {
+  const { texts, video } = useVideoStudio()
+  const [, renderOrId] = useSelectedLayoutSegments()
+
+  const isExportButtonVisible = renderOrId !== 'render' || !renderOrId
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -21,9 +31,15 @@ const Navbar = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          News
+          Meme Studio Video
         </Typography>
-        <Button color="inherit">Login</Button>
+        {video && isExportButtonVisible ? (
+          <RenderButton videoURL={video.url} texts={texts} />
+        ) : (
+          <Button color="inherit" href="/studio" LinkComponent={Link}>
+            Créer une nouvelle vidéo
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   )
