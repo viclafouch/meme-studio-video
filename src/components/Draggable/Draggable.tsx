@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from '@schemas/text'
-import { DownRef, DraggableState } from './Draggable.types'
-import { move } from './Draggable.utils'
+import { DraggableState, MagnetiseValue, MetaDown } from './Draggable.types'
+import { magnetise, move } from './Draggable.utils'
 
 export type DraggableProps = {
   children: React.ReactElement
@@ -9,6 +9,7 @@ export type DraggableProps = {
   y: number
   unscale: number
   textId: Text['id']
+  onMagnetiseChange: (magnetise: MagnetiseValue) => void
   onMove?: (textId: Text['id'], { x, y }: { x: number; y: number }) => void
 }
 
@@ -20,18 +21,27 @@ const Draggable = ({
   y,
   unscale,
   textId,
+  onMagnetiseChange,
   onMove = onMoveDefault
 }: DraggableProps) => {
+  const elementRef = React.useRef<HTMLElement>(null as never)
+  const metaDown = React.useRef<MetaDown>(null as never)
   const [state, setState] = React.useState<DraggableState>({
     mode: false
   })
-  const downRef = React.useRef<DownRef>(null as never)
 
   const handleDraggingMove = React.useCallback(
     (event: MouseEvent) => {
-      onMove?.(textId, move(event, downRef.current, unscale))
+      const position = move(event, metaDown.current, unscale)
+      const positionWithMagnetise = magnetise(position, metaDown.current, 25)
+
+      onMagnetiseChange(positionWithMagnetise.magnetise)
+      onMove?.(textId, {
+        x: positionWithMagnetise.x,
+        y: positionWithMagnetise.y
+      })
     },
-    [onMove, textId, unscale]
+    [onMove, textId, unscale, onMagnetiseChange]
   )
 
   const handleMouseDown = (event: React.MouseEvent) => {
@@ -39,9 +49,16 @@ const Draggable = ({
     event.preventDefault()
     event.stopPropagation()
 
-    downRef.current = {
+    const element = elementRef.current
+    const container = elementRef.current.parentElement as HTMLElement
+
+    metaDown.current = {
       downStartX: pageX - x / unscale,
-      downStartY: pageY - y / unscale
+      downStartY: pageY - y / unscale,
+      width: element.offsetWidth,
+      height: element.offsetHeight,
+      containerCenterX: container.offsetWidth / 2,
+      containerCenterY: container.offsetHeight / 2
     }
 
     setState({
@@ -53,7 +70,8 @@ const Draggable = ({
     setState({
       mode: false
     })
-  }, [])
+    onMagnetiseChange(false)
+  }, [onMagnetiseChange])
 
   React.useEffect(() => {
     if (state.mode) {
@@ -69,7 +87,10 @@ const Draggable = ({
     return () => {}
   }, [state.mode, handleMouseUp, handleDraggingMove])
 
-  return React.cloneElement(children, { onMouseDown: handleMouseDown })
+  return React.cloneElement(children, {
+    onMouseDown: handleMouseDown,
+    ref: elementRef
+  })
 }
 
 export default Draggable
