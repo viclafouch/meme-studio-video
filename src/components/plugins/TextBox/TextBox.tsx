@@ -3,6 +3,7 @@
 import React from 'react'
 import { MuiColorInput } from 'mui-color-input'
 import AccordionItem from '@components/AccordionItem'
+import { WebSafeFont, webSafeFonts } from '@constants/web-safe-fonts'
 import { Text } from '@schemas/text'
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter'
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify'
@@ -13,6 +14,7 @@ import FormatItalicIcon from '@mui/icons-material/FormatItalic'
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
+import MenuItem from '@mui/material/MenuItem'
 import Paper from '@mui/material/Paper'
 import Slider from '@mui/material/Slider'
 import TextField from '@mui/material/TextField'
@@ -108,6 +110,18 @@ export const TextBox = ({
     )
   }
 
+  const handleChangeFontFamily = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    onChange(
+      {
+        ...text,
+        fontFamily: event.target.value as WebSafeFont
+      },
+      index
+    )
+  }
+
   const handleFormat = (
     event: React.MouseEvent<HTMLElement>,
     newFormats: Format[]
@@ -157,14 +171,29 @@ export const TextBox = ({
           format="hex"
           onChange={handleChangeColor}
         />
+        <TextField
+          onChange={handleChangeFontFamily}
+          select
+          label="Police d'écriture"
+          value={text.fontFamily}
+        >
+          {webSafeFonts.map((fontFamily) => {
+            return (
+              <MenuItem key={fontFamily} value={fontFamily}>
+                {fontFamily}
+              </MenuItem>
+            )
+          })}
+        </TextField>
         <Box>
           <Typography gutterBottom>Taille du texte</Typography>
           <Slider
             onChange={handleChangeSize}
             size="small"
             value={text.fontSize}
+            max={200}
             aria-label="Taille du texte"
-            valueLabelDisplay="auto"
+            valueLabelDisplay="off"
           />
         </Box>
         <Paper

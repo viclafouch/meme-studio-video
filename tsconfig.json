@@ -30,6 +30,7 @@
       "@stores/*": ["./src/stores/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@config/*": ["./src/config/*"],
+      "@constants/*": ["./src/constants/*"],
       "@database/*": ["./src/database/*"],
     }
   }

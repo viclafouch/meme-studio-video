@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { webSafeFonts } from '@constants/web-safe-fonts'
 import { generateRandomId } from '@helpers/string'
 
 export const textSchema = z.object({
@@ -6,6 +7,7 @@ export const textSchema = z.object({
   id: z.string(),
   color: z.string(),
   italic: z.boolean(),
+  fontFamily: z.enum(webSafeFonts),
   bold: z.boolean(),
   underlined: z.boolean(),
   y: z.number(),
@@ -21,11 +23,12 @@ export function createText(values: Partial<Text> = {}): Text {
     id: generateRandomId(),
     value: '',
     textAlign: 'left',
-    color: '#000000',
+    color: '#ffffff',
+    fontFamily: 'Arial',
     bold: false,
     x: 0,
     y: 0,
-    fontSize: 30,
+    fontSize: 50,
     italic: false,
     underlined: false,
     ...values

@@ -46,7 +46,6 @@ export const Composition = ({
                 tabIndex={0}
                 style={{
                   transform: `translate3d(${text.x}px, ${text.y}px, 0)`,
-                  fontFamily: 'Arial',
                   alignSelf: 'flex-start',
                   fontSize: text.fontSize,
                   cursor: 'move',
@@ -54,6 +53,7 @@ export const Composition = ({
                   position: 'absolute',
                   left: 0,
                   top: 0,
+                  fontFamily: text.fontFamily,
                   width: 'fit-content',
                   color: text.color,
                   padding: 20,
