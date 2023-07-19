@@ -12,7 +12,10 @@ export const Composition = ({
   unscale = 1,
   isRendering
 }: CompositionProps) => {
-  const [magnetise, setMagnetise] = React.useState<MagnetiseValue>(false)
+  const [magnetise, setMagnetise] = React.useState<MagnetiseValue>({
+    x: false,
+    y: false
+  })
 
   const handleMagnetiseChange = React.useCallback((value: MagnetiseValue) => {
     setMagnetise(value)
@@ -24,12 +27,8 @@ export const Composition = ({
         <RemotionVideo src={videoURL} />
       </AbsoluteFill>
       <AbsoluteFill>
-        {magnetise === 'all' || magnetise === 'x' ? (
-          <Magnetise axis="x" />
-        ) : null}
-        {magnetise === 'all' || magnetise === 'y' ? (
-          <Magnetise axis="y" />
-        ) : null}
+        {magnetise.x ? <Magnetise value={magnetise.x} /> : null}
+        {magnetise.y ? <Magnetise value={magnetise.y} /> : null}
         {texts.map((text) => {
           return (
             <Draggable
@@ -57,6 +56,7 @@ export const Composition = ({
                   width: 'fit-content',
                   color: text.color,
                   padding: 20,
+                  lineHeight: 1,
                   whiteSpace: 'pre-wrap',
                   border: isRendering ? 'none' : '3px dotted rgb(48, 91, 161)',
                   textAlign: text.textAlign,

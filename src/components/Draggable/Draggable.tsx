@@ -9,7 +9,7 @@ export type DraggableProps = {
   y: number
   unscale: number
   textId: Text['id']
-  onMagnetiseChange: (magnetise: MagnetiseValue) => void
+  onMagnetiseChange: ({ x, y }: MagnetiseValue) => void
   onMove?: (textId: Text['id'], { x, y }: { x: number; y: number }) => void
 }
 
@@ -35,7 +35,10 @@ const Draggable = ({
       const position = move(event, metaDown.current, unscale)
       const positionWithMagnetise = magnetise(position, metaDown.current, 25)
 
-      onMagnetiseChange(positionWithMagnetise.magnetise)
+      onMagnetiseChange({
+        x: positionWithMagnetise.magnetise[0],
+        y: positionWithMagnetise.magnetise[1]
+      })
       onMove?.(textId, {
         x: positionWithMagnetise.x,
         y: positionWithMagnetise.y
@@ -57,8 +60,8 @@ const Draggable = ({
       downStartY: pageY - y / unscale,
       width: element.offsetWidth,
       height: element.offsetHeight,
-      containerCenterX: container.offsetWidth / 2,
-      containerCenterY: container.offsetHeight / 2
+      containerWidth: container.offsetWidth,
+      containerHeight: container.offsetHeight
     }
 
     setState({
@@ -70,7 +73,10 @@ const Draggable = ({
     setState({
       mode: false
     })
-    onMagnetiseChange(false)
+    onMagnetiseChange({
+      x: false,
+      y: false
+    })
   }, [onMagnetiseChange])
 
   React.useEffect(() => {

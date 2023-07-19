@@ -33,8 +33,6 @@ const Player = () => {
         <RemotionPlayer
           durationInFrames={120}
           fps={30}
-          showVolumeControls
-          controls
           ref={playerRef}
           clickToPlay={false}
           style={{ width: '100%' }}
