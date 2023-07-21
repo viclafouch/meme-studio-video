@@ -28,14 +28,14 @@ const Player = () => {
   }, [])
 
   return (
-    <Box width="100%" overflow="hidden" position="relative">
+    <Box width="100%" height="100%" overflow="hidden" position="relative">
       {video ? (
         <RemotionPlayer
           durationInFrames={120}
           fps={30}
           ref={playerRef}
           clickToPlay={false}
-          style={{ width: '100%' }}
+          style={{ height: '100%', width: '100%' }}
           compositionWidth={video.width}
           compositionHeight={video.height}
           component={Composition}

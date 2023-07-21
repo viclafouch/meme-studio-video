@@ -1,8 +1,8 @@
 import React from 'react'
-import Box from '@mui/material/Box'
+import StudioDetailsPage from './[id]/page'
 
-const StudioPage = () => {
-  return <Box>Custom page</Box>
+const Studio = () => {
+  return <StudioDetailsPage />
 }
 
-export default StudioPage
+export default Studio

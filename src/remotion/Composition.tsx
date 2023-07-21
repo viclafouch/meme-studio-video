@@ -57,6 +57,7 @@ export const Composition = ({
                   color: text.color,
                   padding: 20,
                   lineHeight: 1,
+                  backgroundColor: text.backgroundColor,
                   whiteSpace: 'pre-wrap',
                   border: isRendering ? 'none' : '3px dotted rgb(48, 91, 161)',
                   textAlign: text.textAlign,

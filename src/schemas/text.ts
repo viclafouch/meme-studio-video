@@ -13,6 +13,7 @@ export const textSchema = z.object({
   y: z.number(),
   x: z.number(),
   fontSize: z.number(),
+  backgroundColor: z.string(),
   textAlign: z.enum(['left', 'center', 'right', 'justify'])
 })
 
@@ -22,6 +23,7 @@ export function createText(values: Partial<Text> = {}): Text {
   return {
     id: generateRandomId(),
     value: '',
+    backgroundColor: 'transparent',
     textAlign: 'left',
     color: '#ffffff',
     fontFamily: 'Arial',

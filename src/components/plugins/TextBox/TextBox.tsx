@@ -87,6 +87,16 @@ export const TextBox = ({
     )
   }
 
+  const handleChangeBackgroundColor = (newBackgroundColor: string) => {
+    onChange(
+      {
+        ...text,
+        backgroundColor: newBackgroundColor
+      },
+      index
+    )
+  }
+
   const handleAlignment = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: Text['textAlign']
@@ -171,6 +181,12 @@ export const TextBox = ({
           format="hex"
           onChange={handleChangeColor}
         />
+        <MuiColorInput
+          label="Couleur de fond"
+          value={text.backgroundColor}
+          format="hex"
+          onChange={handleChangeBackgroundColor}
+        />
         <TextField
           onChange={handleChangeFontFamily}
           select
@@ -200,6 +216,7 @@ export const TextBox = ({
           elevation={0}
           sx={{
             display: 'flex',
+            alignSelf: 'center',
             justifyContent: 'center',
             border: (theme) => {
               return `1px solid ${theme.palette.divider}`

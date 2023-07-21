@@ -59,9 +59,7 @@ const Magnetise = ({ value }: MagnetiseProps) => {
         backgroundColor: blue[500],
         ...stylesByValue[value]
       }}
-    >
-      Magnetise
-    </div>
+    />
   )
 }
 

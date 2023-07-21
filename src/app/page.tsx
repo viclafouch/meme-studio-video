@@ -1,7 +1,7 @@
-import Box from '@mui/material/Box'
+import UploadFile from '@components/UploadFile'
 
 const Home = () => {
-  return <Box height="100%">Page</Box>
+  return <UploadFile />
 }
 
 export default Home
