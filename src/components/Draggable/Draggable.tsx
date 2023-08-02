@@ -1,71 +1,126 @@
 import React from 'react'
 import { Text } from '@schemas/text'
-import { DraggableState, MagnetiseValue, MetaDown } from './Draggable.types'
-import { magnetise, move } from './Draggable.utils'
+import * as Styled from './Draggable.styled'
+import {
+  DraggableState,
+  MagnetiseValue,
+  MetaDown,
+  ResizeMode,
+  ResizeSide
+} from './Draggable.types'
+import { magnetise, move, resize } from './Draggable.utils'
 
 export type DraggableProps = {
   children: React.ReactElement
   x: number
   y: number
+  height: number
+  width: number
   unscale: number
+  disabled?: boolean
   textId: Text['id']
   onMagnetiseChange: ({ x, y }: MagnetiseValue) => void
   onMove?: (textId: Text['id'], { x, y }: { x: number; y: number }) => void
+  onResize?: (
+    textId: Text['id'],
+    {
+      height,
+      width,
+      fontSize
+    }: { height: number; width: number; fontSize?: number }
+  ) => void
+  style: React.CSSProperties
 }
 
-const onMoveDefault = () => {}
+const defaultFunction = () => {}
 
 const Draggable = ({
   children,
   x,
   y,
+  height,
+  width,
   unscale,
   textId,
   onMagnetiseChange,
-  onMove = onMoveDefault
+  disabled = false,
+  onMove = defaultFunction,
+  onResize = defaultFunction,
+  style
 }: DraggableProps) => {
-  const elementRef = React.useRef<HTMLElement>(null as never)
+  const childrenRef = React.useRef<HTMLElement>(null as never)
+  const elementRef = React.useRef<HTMLDivElement>(null as never)
   const metaDown = React.useRef<MetaDown>(null as never)
   const [state, setState] = React.useState<DraggableState>({
     mode: false
   })
 
+  const getMetaOnDown = (event: React.MouseEvent): MetaDown => {
+    const { pageX, pageY } = event
+    const element = elementRef.current
+    const container = elementRef.current.parentElement as HTMLElement
+
+    return {
+      downX: x / unscale,
+      downY: y / unscale,
+      downPageY: pageY,
+      downPageX: pageX,
+      width: element.offsetWidth / unscale,
+      height: element.offsetHeight / unscale,
+      containerWidth: container.offsetWidth / unscale,
+      containerHeight: container.offsetHeight / unscale,
+      childrenHeight: childrenRef.current.offsetHeight / unscale,
+      childrenWidth: childrenRef.current.offsetWidth / unscale
+    }
+  }
+
   const handleDraggingMove = React.useCallback(
     (event: MouseEvent) => {
-      const position = move(event, metaDown.current, unscale)
-      const positionWithMagnetise = magnetise(position, metaDown.current, 25)
+      const position = move(event, metaDown.current)
+      const positionWithMagnetise = magnetise(position, metaDown.current, 10)
 
       onMagnetiseChange({
         x: positionWithMagnetise.magnetise[0],
         y: positionWithMagnetise.magnetise[1]
       })
       onMove?.(textId, {
-        x: positionWithMagnetise.x,
-        y: positionWithMagnetise.y
+        x: positionWithMagnetise.x * unscale,
+        y: positionWithMagnetise.y * unscale
       })
     },
     [onMove, textId, unscale, onMagnetiseChange]
   )
 
+  const handleResizeMove = React.useCallback(
+    (event: MouseEvent) => {
+      const resizer = resize(event, state.mode as ResizeMode, metaDown.current)
+
+      onResize?.(textId, {
+        height: resizer.height * unscale,
+        width: resizer.width * unscale
+      })
+    },
+    [onResize, state.mode, unscale, textId]
+  )
+
   const handleMouseDown = (event: React.MouseEvent) => {
-    const { pageX, pageY } = event
     event.preventDefault()
     event.stopPropagation()
-
-    const element = elementRef.current
-    const container = elementRef.current.parentElement as HTMLElement
-
-    metaDown.current = {
-      downStartX: pageX - x / unscale,
-      downStartY: pageY - y / unscale,
-      width: element.offsetWidth,
-      height: element.offsetHeight,
-      containerWidth: container.offsetWidth,
-      containerHeight: container.offsetHeight
-    }
+    metaDown.current = getMetaOnDown(event)
 
     setState({
       mode: 'dragging'
+    })
+  }
+
+  const handleMouseDownOnResize = (event: React.MouseEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    const side = event.currentTarget.getAttribute('data-side') as ResizeSide
+    metaDown.current = getMetaOnDown(event)
+
+    setState({
+      mode: `resizing-${side}`
     })
   }
 
@@ -82,21 +137,54 @@ const Draggable = ({
   React.useEffect(() => {
     if (state.mode) {
       window.addEventListener('mouseup', handleMouseUp)
-      window.addEventListener('mousemove', handleDraggingMove)
+
+      if (state.mode === 'dragging') {
+        window.addEventListener('mousemove', handleDraggingMove)
+      } else if (state.mode.includes('resizing')) {
+        window.addEventListener('mousemove', handleResizeMove)
+      }
 
       return () => {
-        window.removeEventListener('mouseup', handleMouseUp)
-        window.removeEventListener('mousemove', handleDraggingMove)
+        if (state.mode === 'dragging') {
+          window.removeEventListener('mousemove', handleDraggingMove)
+        } else if (state.mode && state.mode.includes('resizing')) {
+          window.removeEventListener('mousemove', handleResizeMove)
+        }
       }
     }
 
     return () => {}
-  }, [state.mode, handleMouseUp, handleDraggingMove])
+  }, [state.mode, handleMouseUp, handleDraggingMove, handleResizeMove])
 
-  return React.cloneElement(children, {
-    onMouseDown: handleMouseDown,
-    ref: elementRef
-  })
+  return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <div
+      style={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        height,
+        width,
+        border: disabled ? 'none' : '3px dotted rgb(48, 91, 161)',
+        transform: `translate3d(${x}px, ${y}px, 0)`,
+        overflowWrap: 'break-word',
+        willChange: 'height, width, transform',
+        ...style
+      }}
+      onMouseDown={handleMouseDown}
+      ref={elementRef}
+    >
+      {!disabled ? (
+        <>
+          <Styled.Resize data-side="ne" />
+          <Styled.Resize data-side="nw" />
+          <Styled.Resize data-side="se" onMouseDown={handleMouseDownOnResize} />
+          <Styled.Resize data-side="sw" onMouseDown={handleMouseDownOnResize} />
+        </>
+      ) : null}
+      {React.cloneElement(children, { ref: childrenRef })}
+    </div>
+  )
 }
 
 export default Draggable

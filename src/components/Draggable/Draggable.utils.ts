@@ -1,14 +1,19 @@
 /* eslint-disable id-length */
 import { matchIsInRange } from '@helpers/number'
-import { MagnetiseSideX, MagnetiseSideY, MetaDown } from './Draggable.types'
+import {
+  MagnetiseSideX,
+  MagnetiseSideY,
+  MetaDown,
+  ResizeMode
+} from './Draggable.types'
 
-export function move(event: MouseEvent, metaDown: MetaDown, unscale: number) {
-  const { downStartY, downStartX } = metaDown
+export function move(event: MouseEvent, metaDown: MetaDown) {
+  const { downPageX, downX, downPageY, downY } = metaDown
   const { pageY, pageX } = event
 
   return {
-    x: Math.round(pageX - downStartX) * unscale,
-    y: Math.round(pageY - downStartY) * unscale
+    x: Math.round(pageX - (downPageX - downX)),
+    y: Math.round(pageY - (downPageY - downY))
   }
 }
 
@@ -123,5 +128,49 @@ export function magnetise(
     magnetise: [magnetiseX.magnetiseValue, magnetiseY.magnetiseValue],
     x: magnetiseX.x,
     y: magnetiseY.y
+  }
+}
+
+export function resize(
+  event: MouseEvent,
+  mode: ResizeMode,
+  metaDown: MetaDown
+) {
+  const {
+    height,
+    width,
+    downPageY,
+    containerHeight,
+    containerWidth,
+    downY,
+    downX,
+    downPageX
+  } = metaDown
+  const { pageY, pageX } = event
+  const spacingHeight = pageY - downPageY
+  const spacingWidth = pageX - downPageX
+
+  let newHeight = height
+  let newWidth = width
+
+  if (mode === 'resizing-se' || mode === 'resizing-sw') {
+    newHeight = height + spacingHeight
+
+    if (downY + newHeight >= containerHeight) {
+      newHeight = containerHeight - downY
+    }
+  }
+
+  if (mode === 'resizing-ne' || mode === 'resizing-se') {
+    newWidth = width + spacingWidth
+
+    if (downX + newWidth >= containerWidth) {
+      newWidth = containerWidth - downX
+    }
+  }
+
+  return {
+    height: newHeight,
+    width: newWidth
   }
 }

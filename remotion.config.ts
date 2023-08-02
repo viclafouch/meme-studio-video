@@ -10,7 +10,8 @@ Config.overrideWebpackConfig((config) => {
         ...(config.resolve?.alias ?? {}),
         '@components': path.join(process.cwd(), 'src', 'components'),
         '@schemas': path.join(process.cwd(), 'src', 'schemas'),
-        '@helpers': path.join(process.cwd(), 'src', 'helpers')
+        '@helpers': path.join(process.cwd(), 'src', 'helpers'),
+        '@constants': path.join(process.cwd(), 'src', 'constants')
       }
     }
   }

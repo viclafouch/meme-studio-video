@@ -9,6 +9,7 @@ export const Composition = ({
   videoURL,
   texts,
   handleMoveText,
+  handleResizeText,
   unscale = 1,
   isRendering
 }: CompositionProps) => {
@@ -23,9 +24,7 @@ export const Composition = ({
 
   return (
     <AbsoluteFill>
-      <AbsoluteFill style={{ backgroundColor: '#000000', color: '#fff' }}>
-        <RemotionVideo src={videoURL} />
-      </AbsoluteFill>
+      <RemotionVideo src={videoURL} />
       <AbsoluteFill>
         {magnetise.x ? <Magnetise value={magnetise.x} /> : null}
         {magnetise.y ? <Magnetise value={magnetise.y} /> : null}
@@ -36,36 +35,30 @@ export const Composition = ({
               key={text.id}
               x={text.x}
               y={text.y}
+              height={text.height}
+              width={text.width}
               unscale={unscale}
+              disabled={isRendering}
               textId={text.id}
               onMove={handleMoveText}
+              onResize={handleResizeText}
+              style={{
+                alignSelf: 'flex-start',
+                fontSize: text.fontSize,
+                cursor: 'move',
+                userSelect: 'none',
+                fontFamily: text.fontFamily,
+                color: text.color,
+                lineHeight: '100%',
+                whiteSpace: 'pre-wrap',
+                backgroundColor: text.backgroundColor,
+                textAlign: text.textAlign,
+                fontStyle: text.italic ? 'italic' : 'initial',
+                fontWeight: text.bold ? 'bold' : 'initial',
+                textDecoration: text.underlined ? 'underline' : 'initial'
+              }}
             >
-              <div
-                role="button"
-                tabIndex={0}
-                style={{
-                  transform: `translate3d(${text.x}px, ${text.y}px, 0)`,
-                  alignSelf: 'flex-start',
-                  fontSize: text.fontSize,
-                  cursor: 'move',
-                  userSelect: 'none',
-                  position: 'absolute',
-                  left: 0,
-                  top: 0,
-                  fontFamily: text.fontFamily,
-                  width: 'fit-content',
-                  color: text.color,
-                  padding: 20,
-                  lineHeight: 1,
-                  backgroundColor: text.backgroundColor,
-                  whiteSpace: 'pre-wrap',
-                  border: isRendering ? 'none' : '3px dotted rgb(48, 91, 161)',
-                  textAlign: text.textAlign,
-                  fontStyle: text.italic ? 'italic' : 'initial',
-                  fontWeight: text.bold ? 'bold' : 'initial',
-                  textDecoration: text.underlined ? 'underline' : 'initial'
-                }}
-              >
+              <div role="button" tabIndex={0} style={{ display: 'inline' }}>
                 {text.value}
               </div>
             </Draggable>

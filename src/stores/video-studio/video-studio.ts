@@ -18,7 +18,7 @@ export const useVideoStudio = create<State, [['zustand/immer', never]]>(
   immer((produce) => {
     return {
       video: {
-        url: 'https://file-examples.com/storage/fee472ce6e64b122ba0c8b3/2017/04/file_example_MP4_1920_18MG.mp4',
+        url: 'https://samplelib.com/lib/preview/mp4/sample-30s.mp4',
         width: 1920,
         height: 1080
       },

@@ -1,3 +1,7 @@
+export type ResizeSide = 'ne' | 'nw' | 'se' | 'sw'
+
+export type ResizeMode = `resizing-${ResizeSide}`
+
 export type MagnetiseAxis = 'x' | 'y'
 
 export type MagnetiseSide<T extends MagnetiseAxis> =
@@ -15,14 +19,18 @@ export type MagnetiseValue = {
 }
 
 export type DraggableState = {
-  mode: false | 'dragging'
+  mode: false | 'dragging' | ResizeMode
 }
 
 export type MetaDown = {
-  downStartX: number
-  downStartY: number
+  downX: number
+  downY: number
+  downPageX: MouseEvent['pageX']
+  downPageY: MouseEvent['pageY']
   width: number
   height: number
   containerWidth: number
   containerHeight: number
+  childrenWidth: number
+  childrenHeight: number
 }

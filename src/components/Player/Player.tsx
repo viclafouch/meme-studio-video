@@ -19,6 +19,16 @@ const Player = () => {
     [updateText]
   )
 
+  const handleResizeText = React.useCallback(
+    (
+      textId: Text['id'],
+      { height, width }: { height: number; width: number }
+    ) => {
+      updateText(textId, { height, width })
+    },
+    [updateText]
+  )
+
   React.useEffect(() => {
     if (playerRef.current) {
       playerRef.current.addEventListener('scalechange', ({ detail }) => {
@@ -43,6 +53,7 @@ const Player = () => {
             videoURL: video.url,
             texts,
             handleMoveText,
+            handleResizeText,
             unscale: currentUnScale
           }}
         />

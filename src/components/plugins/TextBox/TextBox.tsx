@@ -3,8 +3,10 @@
 import React from 'react'
 import { MuiColorInput } from 'mui-color-input'
 import AccordionItem from '@components/AccordionItem'
+import { getWrapLines } from '@components/plugins/TextBox/TextBox.utils'
 import { WebSafeFont, webSafeFonts } from '@constants/web-safe-fonts'
 import { Text } from '@schemas/text'
+import { useVideoStudio } from '@stores/video-studio'
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter'
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify'
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft'
@@ -16,10 +18,8 @@ import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
 import Paper from '@mui/material/Paper'
-import Slider from '@mui/material/Slider'
 import TextField from '@mui/material/TextField'
 import ToggleButton from '@mui/material/ToggleButton'
-import Typography from '@mui/material/Typography'
 import * as Styled from './TextBox.styled'
 
 export type TextBoxProps = {
@@ -40,6 +40,7 @@ export const TextBox = ({
   onDelete,
   onDuplicate
 }: TextBoxProps) => {
+  const { video } = useVideoStudio()
   const [isExpanded, setIsExpanded] = React.useState<boolean>(false)
   const inputRef = React.useRef<HTMLInputElement>(null)
 
@@ -68,10 +69,20 @@ export const TextBox = ({
   }, [isExpanded])
 
   const handleChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const textValue = event.target.value
+
+    const newText = {
+      ...text,
+      value: textValue
+    }
+
+    const { width, height } = getWrapLines(newText, video?.width || 0)
+
     onChange(
       {
-        ...text,
-        value: event.target.value
+        ...newText,
+        height,
+        width
       },
       index
     )
@@ -110,15 +121,15 @@ export const TextBox = ({
     )
   }
 
-  const handleChangeSize = (event: Event, newValue: number | number[]) => {
-    onChange(
-      {
-        ...text,
-        fontSize: newValue as number
-      },
-      index
-    )
-  }
+  // const handleChangeSize = (event: Event, newValue: number | number[]) => {
+  //   onChange(
+  //     {
+  //       ...text,
+  //       fontSize: newValue as number
+  //     },
+  //     index
+  //   )
+  // }
 
   const handleChangeFontFamily = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -201,7 +212,7 @@ export const TextBox = ({
             )
           })}
         </TextField>
-        <Box>
+        {/* <Box>
           <Typography gutterBottom>Taille du texte</Typography>
           <Slider
             onChange={handleChangeSize}
@@ -211,7 +222,7 @@ export const TextBox = ({
             aria-label="Taille du texte"
             valueLabelDisplay="off"
           />
-        </Box>
+        </Box> */}
         <Paper
           elevation={0}
           sx={{
