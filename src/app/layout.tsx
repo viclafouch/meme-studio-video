@@ -22,7 +22,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <Providers>
           <ThemeRegistry options={{ key: 'mui' }}>
             <Navbar />
-            <Box flexGrow={1}>{children}</Box>
+            <Box flexGrow={1} overflow="hidden">
+              {children}
+            </Box>
           </ThemeRegistry>
         </Providers>
       </Box>

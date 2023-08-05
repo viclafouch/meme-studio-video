@@ -3,7 +3,7 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import wretch from 'wretch'
-import { CompositionProps } from '@schemas/composition'
+import { CompositionProps } from '@remotion/Composition.types'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useMutation } from '@tanstack/react-query'
 

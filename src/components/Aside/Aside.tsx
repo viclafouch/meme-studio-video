@@ -6,14 +6,21 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 
 const Aside = () => {
-  const { texts, addText, updateText, duplicateText, deleteText } =
-    useVideoStudio()
+  const {
+    texts,
+    addText,
+    updateText,
+    textIdOpened,
+    duplicateText,
+    deleteText,
+    updateTextIdOpened
+  } = useVideoStudio()
 
   const handleAddText = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault()
-    addText()
+    addText(true)
   }
 
   const handleChangeText = React.useCallback(
@@ -37,10 +44,17 @@ const Aside = () => {
     [deleteText]
   )
 
+  const handleExpandedChange = React.useCallback(
+    (textId: Text['id'], isOpened: boolean) => {
+      updateTextIdOpened(isOpened ? textId : null)
+    },
+    [updateTextIdOpened]
+  )
+
   return (
     <Box
       pt={3}
-      sx={{ borderLeft: '1px solid rgba(0, 0, 0, 0.12)' }}
+      sx={{ borderLeft: '1px solid rgba(0, 0, 0, 0.12)', overflowY: 'auto' }}
       height="100%"
     >
       {texts.map((text, index) => {
@@ -52,6 +66,8 @@ const Aside = () => {
             text={text}
             index={index}
             key={text.id}
+            onExpandedChange={handleExpandedChange}
+            isExpanded={text.id === textIdOpened}
           />
         )
       })}

@@ -8,7 +8,7 @@ import { useVideoStudio } from '@stores/video-studio'
 import { Box } from '@mui/material'
 
 const Player = () => {
-  const { texts, updateText, video } = useVideoStudio()
+  const { texts, updateText, video, isPreviewing } = useVideoStudio()
   const playerRef = React.useRef<PlayerRef>(null)
   const [currentUnScale, setCurrentUnScale] = React.useState(1)
 
@@ -54,7 +54,8 @@ const Player = () => {
             texts,
             handleMoveText,
             handleResizeText,
-            unscale: currentUnScale
+            unscale: currentUnScale,
+            isRendering: isPreviewing
           }}
         />
       ) : null}

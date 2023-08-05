@@ -18,16 +18,20 @@ import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
 import Paper from '@mui/material/Paper'
+import Slider from '@mui/material/Slider'
 import TextField from '@mui/material/TextField'
 import ToggleButton from '@mui/material/ToggleButton'
+import Typography from '@mui/material/Typography'
 import * as Styled from './TextBox.styled'
 
 export type TextBoxProps = {
   index: number
+  isExpanded: boolean
   text: Text
   onChange: (text: Text, index: number) => void
   onDelete: (text: Text, index: number) => void
   onDuplicate: (text: Text, index: number) => void
+  onExpandedChange: (textId: Text['id'], isExpanded: boolean) => void
 }
 
 const formats = ['bold', 'italic', 'underlined'] as const
@@ -38,10 +42,13 @@ export const TextBox = ({
   text,
   onChange,
   onDelete,
-  onDuplicate
+  onDuplicate,
+  isExpanded,
+  onExpandedChange
 }: TextBoxProps) => {
-  const { video } = useVideoStudio()
-  const [isExpanded, setIsExpanded] = React.useState<boolean>(false)
+  const video = useVideoStudio((state) => {
+    return state.video
+  })
   const inputRef = React.useRef<HTMLInputElement>(null)
 
   const textFormats = React.useMemo(() => {
@@ -88,6 +95,10 @@ export const TextBox = ({
     )
   }
 
+  const handleAccordionChange = (value: boolean) => {
+    onExpandedChange(text.id, value)
+  }
+
   const handleChangeColor = (newColor: string) => {
     onChange(
       {
@@ -121,15 +132,15 @@ export const TextBox = ({
     )
   }
 
-  // const handleChangeSize = (event: Event, newValue: number | number[]) => {
-  //   onChange(
-  //     {
-  //       ...text,
-  //       fontSize: newValue as number
-  //     },
-  //     index
-  //   )
-  // }
+  const handleChangeSize = (event: Event, newValue: number | number[]) => {
+    onChange(
+      {
+        ...text,
+        fontSize: newValue as number
+      },
+      index
+    )
+  }
 
   const handleChangeFontFamily = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -172,7 +183,7 @@ export const TextBox = ({
       onDelete={handleDelete}
       onDuplicate={handleDuplicate}
       isExpanded={isExpanded}
-      onChange={setIsExpanded}
+      onChange={handleAccordionChange}
       title={text.value}
     >
       <Box display="flex" flexDirection="column" gap={2}>
@@ -212,7 +223,7 @@ export const TextBox = ({
             )
           })}
         </TextField>
-        {/* <Box>
+        <Box>
           <Typography gutterBottom>Taille du texte</Typography>
           <Slider
             onChange={handleChangeSize}
@@ -222,7 +233,7 @@ export const TextBox = ({
             aria-label="Taille du texte"
             valueLabelDisplay="off"
           />
-        </Box> */}
+        </Box>
         <Paper
           elevation={0}
           sx={{

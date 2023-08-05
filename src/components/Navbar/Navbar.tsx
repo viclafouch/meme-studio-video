@@ -19,7 +19,7 @@ const Navbar = () => {
   const isExportButtonVisible = renderOrId !== 'render' || !renderOrId
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ zIndex: 2 }}>
       <Toolbar>
         <IconButton
           size="large"

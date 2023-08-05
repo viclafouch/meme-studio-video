@@ -1,8 +1,8 @@
 import { CompositionData } from '@schemas/composition'
 import { Text } from '@schemas/text'
 
-type CompositionPropsPreview = CompositionData & {
-  isRendering?: never
+export type CompositionProps = CompositionData & {
+  isRendering?: boolean
   unscale?: number
   handleMoveText?: (
     textId: Text['id'],
@@ -13,14 +13,3 @@ type CompositionPropsPreview = CompositionData & {
     { height, width }: { height: number; width: number }
   ) => void
 }
-
-type CompositionPropsProduction = CompositionData & {
-  isRendering?: true
-  unscale?: never
-  handleMoveText?: never
-  handleResizeText?: never
-}
-
-export type CompositionProps =
-  | CompositionPropsPreview
-  | CompositionPropsProduction
