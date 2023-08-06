@@ -11,7 +11,8 @@ export const Composition = ({
   handleMoveText,
   handleResizeText,
   unscale = 1,
-  isRendering
+  isRendering,
+  topBlock
 }: CompositionProps) => {
   const [magnetise, setMagnetise] = React.useState<MagnetiseValue>({
     x: false,
@@ -24,6 +25,15 @@ export const Composition = ({
 
   return (
     <AbsoluteFill>
+      {topBlock.isVisible ? (
+        <div
+          style={{
+            width: '100%',
+            height: topBlock.height,
+            backgroundColor: '#ffffff'
+          }}
+        />
+      ) : null}
       <RemotionVideo src={videoURL} />
       <AbsoluteFill>
         {magnetise.x ? <Magnetise value={magnetise.x} /> : null}

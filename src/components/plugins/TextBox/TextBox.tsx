@@ -17,7 +17,6 @@ import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
-import Paper from '@mui/material/Paper'
 import Slider from '@mui/material/Slider'
 import TextField from '@mui/material/TextField'
 import ToggleButton from '@mui/material/ToggleButton'
@@ -234,18 +233,7 @@ export const TextBox = ({
             valueLabelDisplay="off"
           />
         </Box>
-        <Paper
-          elevation={0}
-          sx={{
-            display: 'flex',
-            alignSelf: 'center',
-            justifyContent: 'center',
-            border: (theme) => {
-              return `1px solid ${theme.palette.divider}`
-            },
-            flexWrap: 'wrap'
-          }}
-        >
+        <Styled.Paper elevation={0}>
           <Styled.ToggleButtonGroup
             size="small"
             value={text.textAlign}
@@ -298,7 +286,7 @@ export const TextBox = ({
               <FormatUnderlinedIcon />
             </ToggleButton>
           </Styled.ToggleButtonGroup>
-        </Paper>
+        </Styled.Paper>
       </Box>
     </AccordionItem>
   )

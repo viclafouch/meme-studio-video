@@ -8,7 +8,7 @@ import { useVideoStudio } from '@stores/video-studio'
 import { Box } from '@mui/material'
 
 const Player = () => {
-  const { texts, updateText, video, isPreviewing } = useVideoStudio()
+  const { texts, updateText, video, isPreviewing, topBlock } = useVideoStudio()
   const playerRef = React.useRef<PlayerRef>(null)
   const [currentUnScale, setCurrentUnScale] = React.useState(1)
 
@@ -47,7 +47,9 @@ const Player = () => {
           clickToPlay={false}
           style={{ height: '100%', width: '100%' }}
           compositionWidth={video.width}
-          compositionHeight={video.height}
+          compositionHeight={
+            topBlock.isVisible ? video.height + topBlock.height : video.height
+          }
           component={Composition}
           inputProps={{
             videoURL: video.url,
@@ -55,7 +57,8 @@ const Player = () => {
             handleMoveText,
             handleResizeText,
             unscale: currentUnScale,
-            isRendering: isPreviewing
+            isRendering: isPreviewing,
+            topBlock
           }}
         />
       ) : null}

@@ -3,25 +3,16 @@ import TextBox from '@components/plugins/TextBox'
 import { Text } from '@schemas/text'
 import { useVideoStudio } from '@stores/video-studio'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 
 const Aside = () => {
   const {
     texts,
-    addText,
     updateText,
     textIdOpened,
     duplicateText,
     deleteText,
     updateTextIdOpened
   } = useVideoStudio()
-
-  const handleAddText = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault()
-    addText(true)
-  }
 
   const handleChangeText = React.useCallback(
     (text: Text) => {
@@ -71,15 +62,6 @@ const Aside = () => {
           />
         )
       })}
-      <Button
-        onClick={handleAddText}
-        variant="contained"
-        fullWidth
-        size="large"
-        sx={{ borderRadius: 0 }}
-      >
-        Ajouter un texte
-      </Button>
     </Box>
   )
 }

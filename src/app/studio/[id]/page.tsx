@@ -17,6 +17,7 @@ const StudioDetailsPage = () => {
         justifyContent="center"
         alignItems="center"
         overflow="hidden"
+        bgcolor="#202020"
       >
         <Player />
       </Box>

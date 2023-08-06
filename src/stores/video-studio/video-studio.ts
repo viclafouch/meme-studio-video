@@ -2,12 +2,15 @@ import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { generateRandomId } from '@helpers/string'
 import { createText, Text } from '@schemas/text'
+import { TopBlock } from '@schemas/top-block'
 import { Video } from '@schemas/video'
 
 type State = {
   readonly video: Video | null
   readonly setVideo: (video: Video) => void
   readonly texts: Text[]
+  readonly topBlock: TopBlock
+  readonly toggleTopBlockVisible: () => void
   readonly isPreviewing: boolean
   readonly toggleIsPreviewing: () => void
   readonly textIdOpened: Text['id'] | null
@@ -21,6 +24,10 @@ type State = {
 export const useVideoStudio = create<State, [['zustand/immer', never]]>(
   immer((produce) => {
     return {
+      topBlock: {
+        isVisible: true,
+        height: 200
+      },
       isPreviewing: false,
       textIdOpened: null,
       video: {
@@ -31,6 +38,11 @@ export const useVideoStudio = create<State, [['zustand/immer', never]]>(
       toggleIsPreviewing: () => {
         produce((draft) => {
           draft.isPreviewing = !draft.isPreviewing
+        })
+      },
+      toggleTopBlockVisible: () => {
+        produce((draft) => {
+          draft.topBlock.isVisible = !draft.topBlock.isVisible
         })
       },
       updateTextIdOpened: (textId) => {
