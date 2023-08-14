@@ -136,38 +136,12 @@ export function resize(
   mode: ResizeMode,
   metaDown: MetaDown
 ) {
-  const {
-    height,
-    width,
-    downPageY,
-    containerHeight,
-    containerWidth,
-    downY,
-    downX,
-    downPageX
-  } = metaDown
-  const { pageY, pageX } = event
-  const spacingHeight = pageY - downPageY
+  const { height, width, downPageX } = metaDown
+  const { pageX } = event
   const spacingWidth = pageX - downPageX
-
-  let newHeight = height
-  let newWidth = width
-
-  if (mode === 'resizing-se' || mode === 'resizing-sw') {
-    newHeight = height + spacingHeight
-
-    if (downY + newHeight >= containerHeight) {
-      newHeight = containerHeight - downY
-    }
-  }
-
-  if (mode === 'resizing-ne' || mode === 'resizing-se') {
-    newWidth = width + spacingWidth
-
-    if (downX + newWidth >= containerWidth) {
-      newWidth = containerWidth - downX
-    }
-  }
+  const newWidth = width + spacingWidth
+  const relativeWidthPercent = newWidth / (width / 100)
+  const newHeight = (height / 100) * relativeWidthPercent
 
   return {
     height: newHeight,

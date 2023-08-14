@@ -31,7 +31,7 @@ export const useVideoStudio = create<State, [['zustand/immer', never]]>(
       isPreviewing: false,
       textIdOpened: null,
       video: {
-        url: 'https://file-examples.com/storage/fe072e668b64cd6ce9c9963/2017/04/file_example_MP4_1920_18MG.mp4',
+        url: 'https://file-examples.com/storage/fe7bb0e37864d66f29c40ee/2017/04/file_example_MP4_1920_18MG.mp4',
         width: 1920,
         height: 1080
       },

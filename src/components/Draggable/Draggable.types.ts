@@ -31,6 +31,4 @@ export type MetaDown = {
   height: number
   containerWidth: number
   containerHeight: number
-  childrenWidth: number
-  childrenHeight: number
 }

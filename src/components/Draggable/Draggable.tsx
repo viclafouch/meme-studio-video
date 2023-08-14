@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react'
 import { Text } from '@schemas/text'
 import * as Styled from './Draggable.styled'
@@ -11,7 +12,7 @@ import {
 import { magnetise, move, resize } from './Draggable.utils'
 
 export type DraggableProps = {
-  children: React.ReactElement
+  children: React.ReactNode
   x: number
   y: number
   height: number
@@ -23,11 +24,7 @@ export type DraggableProps = {
   onMove?: (textId: Text['id'], { x, y }: { x: number; y: number }) => void
   onResize?: (
     textId: Text['id'],
-    {
-      height,
-      width,
-      fontSize
-    }: { height: number; width: number; fontSize?: number }
+    { height, width, scale }: { height: number; width: number; scale: number }
   ) => void
   style: React.CSSProperties
 }
@@ -48,7 +45,6 @@ const Draggable = ({
   onResize = defaultFunction,
   style
 }: DraggableProps) => {
-  const childrenRef = React.useRef<HTMLElement>(null as never)
   const elementRef = React.useRef<HTMLDivElement>(null as never)
   const metaDown = React.useRef<MetaDown>(null as never)
   const [state, setState] = React.useState<DraggableState>({
@@ -68,9 +64,7 @@ const Draggable = ({
       width: element.offsetWidth / unscale,
       height: element.offsetHeight / unscale,
       containerWidth: container.offsetWidth / unscale,
-      containerHeight: container.offsetHeight / unscale,
-      childrenHeight: childrenRef.current.offsetHeight / unscale,
-      childrenWidth: childrenRef.current.offsetWidth / unscale
+      containerHeight: container.offsetHeight / unscale
     }
   }
 
@@ -97,7 +91,8 @@ const Draggable = ({
 
       onResize?.(textId, {
         height: resizer.height * unscale,
-        width: resizer.width * unscale
+        width: resizer.width * unscale,
+        scale: 1
       })
     },
     [onResize, state.mode, unscale, textId]
@@ -158,34 +153,54 @@ const Draggable = ({
 
   return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <div
-      style={{
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        height,
-        width,
-        borderWidth: '5px',
-        borderStyle: 'solid',
-        borderColor: disabled ? 'transparent' : 'rgb(48, 91, 161)',
-        transform: `translate3d(${x}px, ${y}px, 0)`,
-        overflowWrap: 'break-word',
-        willChange: 'height, width, transform',
-        ...style
-      }}
-      onMouseDown={handleMouseDown}
-      ref={elementRef}
-    >
-      {!disabled ? (
-        <>
-          <Styled.Resize data-side="ne" />
-          <Styled.Resize data-side="nw" />
-          <Styled.Resize data-side="se" onMouseDown={handleMouseDownOnResize} />
-          <Styled.Resize data-side="sw" onMouseDown={handleMouseDownOnResize} />
-        </>
-      ) : null}
-      {React.cloneElement(children, { ref: childrenRef })}
-    </div>
+    <>
+      <div
+        style={{
+          position: 'absolute',
+          height,
+          width,
+          zIndex: 2,
+          transform: `translate3d(${x}px, ${y}px, 0)`,
+          overflowWrap: 'break-word',
+          willChange: 'height, width, transform'
+        }}
+        onMouseDown={handleMouseDown}
+        ref={elementRef}
+      >
+        {!disabled ? (
+          <>
+            <Styled.Resize data-side="ne" />
+            <Styled.Resize data-side="nw" />
+            <Styled.Resize
+              data-side="se"
+              onMouseDown={handleMouseDownOnResize}
+            />
+            <Styled.Resize
+              data-side="sw"
+              onMouseDown={handleMouseDownOnResize}
+            />
+          </>
+        ) : null}
+        <div style={style}>{children}</div>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          height,
+          width,
+          borderWidth: '5px',
+          borderStyle: 'solid',
+          borderColor: 'rgb(48, 91, 161)',
+          transform: `translate3d(${x}px, ${y}px, 0)`,
+          willChange: 'height, width, transform'
+        }}
+      >
+        <Styled.Resize data-side="ne" />
+        <Styled.Resize data-side="nw" />
+        <Styled.Resize data-side="se" onMouseDown={handleMouseDownOnResize} />
+        <Styled.Resize data-side="sw" onMouseDown={handleMouseDownOnResize} />
+      </div>
+    </>
   )
 }
 

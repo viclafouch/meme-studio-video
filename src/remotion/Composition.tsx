@@ -68,9 +68,7 @@ export const Composition = ({
                 textDecoration: text.underlined ? 'underline' : 'initial'
               }}
             >
-              <div role="button" tabIndex={0} style={{ display: 'inline' }}>
-                {text.value}
-              </div>
+              {text.value}
             </Draggable>
           )
         })}

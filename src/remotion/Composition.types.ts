@@ -12,6 +12,6 @@ export type CompositionProps = CompositionData & {
   ) => void
   handleResizeText?: (
     textId: Text['id'],
-    { height, width }: { height: number; width: number }
+    { height, width }: { height: number; width: number; scale: number }
   ) => void
 }

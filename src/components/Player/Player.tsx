@@ -22,9 +22,9 @@ const Player = () => {
   const handleResizeText = React.useCallback(
     (
       textId: Text['id'],
-      { height, width }: { height: number; width: number }
+      { height, width, scale }: { height: number; width: number; scale: number }
     ) => {
-      updateText(textId, { height, width })
+      updateText(textId, { height, width, scale })
     },
     [updateText]
   )
