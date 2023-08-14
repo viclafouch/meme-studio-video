@@ -26,8 +26,6 @@ const UploadFile = () => {
         height: data.height
       })
 
-      console.log(data)
-
       return router.push(`/studio`)
     }
   })

@@ -3,17 +3,17 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import wretch from 'wretch'
-import { CompositionProps } from '@remotion/Composition.types'
+import { CompositionData } from '@schemas/composition'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useMutation } from '@tanstack/react-query'
 
-export type RenderButtonProps = CompositionProps
+export type RenderButtonProps = CompositionData
 
 const RenderButton = ({ videoURL, texts }: RenderButtonProps) => {
   const router = useRouter()
 
   const render = useMutation({
-    mutationFn: (compositionProps: CompositionProps) => {
+    mutationFn: (compositionProps: CompositionData) => {
       return wretch('/studio/render')
         .post(compositionProps)
         .json<{ id: string }>()

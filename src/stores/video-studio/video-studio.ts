@@ -21,15 +21,19 @@ type State = {
   readonly updateTextIdOpened: (textId: Text['id'] | null) => void
 }
 
+const initialSettings = {
+  topBlock: {
+    isVisible: false,
+    height: 200
+  },
+  isPreviewing: false,
+  textIdOpened: null
+} as const satisfies Partial<State>
+
 export const useVideoStudio = create<State, [['zustand/immer', never]]>(
   immer((produce) => {
     return {
-      topBlock: {
-        isVisible: true,
-        height: 200
-      },
-      isPreviewing: false,
-      textIdOpened: null,
+      ...initialSettings,
       video: {
         url: 'https://file-examples.com/storage/fe7bb0e37864d66f29c40ee/2017/04/file_example_MP4_1920_18MG.mp4',
         width: 1920,
@@ -53,6 +57,10 @@ export const useVideoStudio = create<State, [['zustand/immer', never]]>(
       setVideo: (video) => {
         produce((draft) => {
           draft.video = video
+          draft.texts = []
+          draft.isPreviewing = false
+          draft.textIdOpened = null
+          draft.topBlock = initialSettings.topBlock
         })
       },
       texts: [],
